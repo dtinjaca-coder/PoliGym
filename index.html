@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poli Gym - Modo Oscuro</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background-color: #121212; /* Fondo oscuro */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed; /* Fija la barra en la parte superior */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background-color: #333; /* Fondo oscuro para el header */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1000; /* Asegura que la barra esté por encima de otros elementos */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-emoji {
+            font-size: 50px;
+        }
+
+        .logo h1 {
+            color: #2ecc71;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #ddd; /* Color claro para los enlaces en modo oscuro */
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .navbar a:hover, .navbar .highlight {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        /* Hero section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            background: #555 url('gym-background.jpg') no-repeat center/cover;
+            height: 80vh;
+            color: #fff;
+            text-align: center;
+            margin-top: 80px; /* Evita que el contenido se solape con la barra fija */
+        }
+
+        .hero-text h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2ecc71;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .register-button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .register-button:hover {
+            background-color: #27ae60;
+        }
+
+        /* Pestaña emergente de registro */
+        .register-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-modal-content {
+            background-color: #333; /* Fondo oscuro para el modal */
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .register-modal input,
+        .register-modal button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .register-modal button {
+            background-color: #2ecc71;
+            color: white;
+            cursor: pointer;
+        }
+
+        .register-modal button:hover {
+            background-color: #27ae60;
+        }
+
+        /* Botón de Cierre (X) */
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Sección de Servicios */
+        #servicios {
+            padding: 40px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        #servicios h2 {
+            font-size: 36px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .service {
+            background-color: #444; /* Fondo más oscuro para las tarjetas de servicio */
+            color: #fff;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .service h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .service p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .service button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .service button:hover {
+            background-color: #27ae60;
+        }
+
+        /* Artículos */
+        #articulos {
+            padding: 40px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+        }
+
+        #articulos h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #2ecc71;
+        }
+
+        /* Contenedor de los productos (flexible) */
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Grilla responsiva */
+            gap: 20px;
+            justify-items: center; /* Centra los productos */
+        }
+
+        /* Estilo de cada tarjeta de producto */
+        .product {
+            background-color: #444; /* Fondo oscuro para los productos */
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación al pasar el ratón */
+            max-width: 250px; /* Asegura que el tamaño del producto sea consistente */
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px; /* Espacio entre la imagen y el texto */
+        }
+
+        .product h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .product p {
+            font-size: 16px;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Efecto hover para la interactividad */
+        .product:hover {
+            transform: translateY(-10px); /* Hace que el producto se desplace hacia arriba */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade más sombra */
+        }
+
+        /* Testimonios */
+        .testimonial-section {
+            background-color: #222;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .testimonial-section h2 {
+            color: #fff;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial {
+            font-size: 18px;
+            font-style: italic;
+            color: #fff;
+        }
+
+        /* Enlace para Testimonios */
+        .go-to-testimonials {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Sección de Contáctanos */
+        #contactanos {
+            padding: 40px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            margin-top: 100px; /* Espacio después de la barra */
+        }
+
+        #contactanos h2 {
+            font-size: 36px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 300px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form textarea {
+            height: 150px;
+        }
+
+        .contact-form button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #27ae60;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+
+        /* Eliminar el carrito de compras */
+        #cart {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="logo-emoji">🏋️‍♂️</span>
+            <h1>POLI GYM</h1>
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#inicio" onclick="scrollToTop()">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#articulos">Artículos</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#contactanos">Contáctanos</a></li> <!-- Agregado Contáctanos -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="inicio">
+            <div class="hero-text">
+                <h2>Libera tu potencial físico</h2>
+                <p>Únete a Poli Gym y alcanza tus metas.</p>
+                <button class="register-button" onclick="showRegisterModal()">Registrarse</button>
+            </div>
+        </section>
+
+        <!-- Sección de Servicios -->
+        <section id="servicios">
+            <h2>Servicios de Poli Gym</h2>
+            <div class="service">
+                <h3>Entrenamientos Personalizados</h3>
+                <p>Recibe un plan de entrenamiento personalizado de acuerdo a tus necesidades y objetivos.</p>
+                <button onclick="alert('¡Solicita tu consulta!')">Solicitar Consulta</button>
+            </div>
+            <div class="service">
+                <h3>Clases Grupales</h3>
+                <p>Únete a nuestras clases grupales de yoga, pilates, spinning, y más.</p>
+                <button onclick="alert('Consulta nuestros horarios')">Ver Horarios</button>
+            </div>
+            <div class="service">
+                <h3>Asesoría Nutricional</h3>
+                <p>Obtén un plan nutricional personalizado que se adapte a tus metas.</p>
+                <button onclick="alert('Solicita una consulta nutricional')">Solicitar Asesoría</button>
+            </div>
+        </section>
+
+        <!-- Sección de Artículos -->
+        <section id="articulos">
+            <h2>Artículos Deportivos</h2>
+            
+            <!-- Categoría: Accesorios básicos -->
+            <div class="category">
+                <h3>Accesorios Básicos</h3>
+                <div class="product-container">
+                    <div class="product">
+                        <img src="Imagenes/guantes.jpg" alt="Guantes de entrenamiento">
+                        <h3>Guantes de entrenamiento</h3>
+                        <p>Precio: $100,000 COP</p>
+                    </div>
+                    <div class="product">
+                        <img src="Imagenes/banda-elastica.jpeg" alt="Banda elástica">
+                        <h3>Banda elástica</h3>
+                        <p>Precio: $30,000 COP</p>
+                    </div>
+                    <div class="product">
+                        <img src="Imagenes/botella-deportiva.jpeg" alt="Botella deportiva">
+                        <h3>Botella deportiva</h3>
+                        <p>Precio: $15,000 COP</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categoría: Equipo avanzado -->
+            <div class="category">
+                <h3>Equipo Avanzado</h3>
+                <div class="product-container">
+                    <div class="product">
+                        <img src="Imagenes/pesas-ajustables.jpeg" alt="Pesas ajustables">
+                        <h3>Pesas ajustables</h3>
+                        <p>Precio: $250,000 COP</p>
+                    </div>
+                    <div class="product">
+                        <img src="Imagenes/esteras-yoga.jpg" alt="Esteras para yoga">
+                        <h3>Esteras para yoga</h3>
+                        <p>Precio: $60,000 COP</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categoría: Ropa deportiva -->
+            <div class="category">
+                <h3>Ropa Deportiva</h3>
+                <div class="product-container">
+                    <div class="product">
+                        <img src="Imagenes/ropa-deportiva.jpg" alt="Ropa deportiva">
+                        <h3>Ropa deportiva</h3>
+                        <p>Precio: $80,000 COP</p>
+                    </div>
+                    <div class="product">
+                        <img src="Imagenes/camiseta-deportiva.jpeg" alt="Camiseta deportiva">
+                        <h3>Camiseta deportiva</h3>
+                        <p>Precio: $50,000 COP</p>
+                    </div>
+                    <div class="product">
+                        <img src="Imagenes/leggings-deportivos.jpeg" alt="Leggings deportivos">
+                        <h3>Leggings deportivos</h3>
+                        <p>Precio: $70,000 COP</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="testimonial-section" id="testimonios">
+            <h2 style="color: #fff;">Testimonios</h2>
+            <div class="testimonial">
+                <p>"El gimnasio tiene todo lo que necesito para entrenar. Los productos son de excelente calidad."</p>
+                <p>- Juan Pérez</p>
+            </div>
+            <div class="testimonial">
+                <p>"Los precios son muy buenos y la atención es increíble. ¡Muy recomendado!"</p>
+                <p>- María Gómez</p>
+            </div>
+            <div class="testimonial">
+                <p>"Me encanta el ambiente y los entrenadores son muy profesionales. ¡100% recomendable!"</p>
+                <p>- Carlos López</p>
+            </div>
+        </section>
+
+        <!-- Enlace para Testimonios -->
+        <button class="go-to-testimonials" onclick="scrollToTestimonials()">Ver Testimonios</button>
+
+        <!-- Sección de Contáctanos -->
+        <section id="contactanos">
+            <h2>Contáctanos</h2>
+            <div class="contact-form">
+                <input type="text" id="nombre" placeholder="Tu nombre" onfocus="clearPlaceholder(this)">
+                <input type="email" id="email" placeholder="Tu email" onfocus="clearPlaceholder(this)">
+                <input type="tel" id="telefono" placeholder="Tu teléfono" onfocus="clearPlaceholder(this)">
+                <textarea id="descripcion" placeholder="Tu mensaje"></textarea>
+                <button onclick="sendMessage()">Enviar</button>
+                <div id="success-message" style="display:none; color: green;">¡Envío exitoso!</div>
+                <div id="error-message" class="error-message" style="display:none; color: red;">Todos los campos son obligatorios.</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="register-modal">
+        <div class="register-modal-content">
+            <span class="close-modal" onclick="closeRegisterModal()">X</span>
+            <h3>Formulario de Registro</h3>
+            <input type="text" id="username" placeholder="Usuario" value="politecnico" />
+            <input type="password" id="password" placeholder="Contraseña" value="grancolombiano" />
+            <button onclick="registerUser()">Registrarse</button>
+            <div id="register-error" style="color: red;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar el modal de registro
+        function showRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        // Función para cerrar el modal de registro
+        function closeRegisterModal() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        // Función para registrar al usuario
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('register-error');
+
+            if (username === 'politecnico' && password === 'grancolombiano') {
+                alert('Registro exitoso');
+                closeRegisterModal();
+            } else {
+                errorDiv.textContent = 'Usuario o contraseña incorrectos.';
+            }
+        }
+
+        // Función para limpiar el texto de placeholder al hacer foco en el campo
+        function clearPlaceholder(input) {
+            input.placeholder = '';
+        }
+
+        // Función para desplazarse hasta la parte superior de la página
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Función para desplazarse a la sección de Testimonios
+        function scrollToTestimonials() {
+            const testimonialsSection = document.querySelector('#testimonios');
+            testimonialsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función para enviar el mensaje de contacto
+        function sendMessage() {
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            // Verificar si todos los campos están llenos
+            if (nombre === '' || email === '' || telefono === '' || descripcion === '') {
+                // Si algún campo está vacío, mostrar mensaje de error
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            } else {
+                // Si todos los campos están completos, mostrar mensaje de éxito
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+
+                // Opcionalmente, redirigir a la página principal después de unos segundos
+                setTimeout(function() {
+                    window.location.href = '#inicio'; // Redirige al principio de la página
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
